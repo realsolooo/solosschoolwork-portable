@@ -1,113 +1,80 @@
-// Initialize particles.js with default settings
-particlesJS("particles-js", {
-    particles: {
-        number: {
-            value: 50,
-            density: {
-                enable: true,
-                value_area: 800
-            }
-        },
-        color: {
-            value: "#ffffff"
-        },
-        shape: {
-            type: "circle",
-            stroke: {
-                width: 0,
-                color: "#000000"
-            },
-            polygon: {
-                nb_sides: 5
-            }
-        },
-        opacity: {
-            value: 0.5,
-            random: true,
-            anim: {
-                enable: true,
-                speed: 1,
-                opacity_min: 0,
-                sync: false
-            }
-        },
-        size: {
-            value: 3,
-            random: true,
-            anim: {
-                enable: true,
-                speed: 40,
-                size_min: 0,
-                sync: false
-            }
-        },
-        line_linked: {
-            enable: true,
-            distance: 150,
-            color: "#ffffff",
-            opacity: 0.4,
-            width: 1
-        },
-        move: {
-            enable: true,
-            speed: 6,
-            direction: "none",
-            random: false,
-            straight: false,
-            out_mode: "out",
-            bounce: false
-        }
-    },
-    interactivity: {
-        detect_on: "canvas",
-        events: {
-            onhover: {
-                enable: true,
-                mode: "repulse"
-            },
-            onclick: {
-                enable: true,
-                mode: "push"
-            }
-        },
-        modes: {
-            push: {
-                particles_nb: 4
-            },
-            repulse: {
-                distance: 100,
-                duration: 0.4
-            }
-        }
-    },
-    retina_detect: true
-});
+const iframeContainer = document.getElementById('iframe-container');
+const urlInput = document.getElementById('url');
+const engineSelect = document.getElementById('engine');
+const proxyToggle = document.getElementById('proxyToggle');
 
-// Theme switching function
-function switchTheme(theme) {
-    document.body.classList.remove("theme-light", "theme-dark", "theme-frogie", "theme-szvy");
-    document.body.classList.add(theme);
-
-    // Save the theme to localStorage
-    localStorage.setItem("theme", theme);
+// Open a new tab with the given URL
+function openTab(url) {
+  iframeContainer.innerHTML = '';
+  const iframe = document.createElement('iframe');
+  iframe.src = url;
+  iframe.width = '100%';
+  iframe.height = '600px';
+  iframe.style.border = 'none';
+  iframeContainer.appendChild(iframe);
 }
 
-// Check localStorage for saved theme preference and apply it
-document.addEventListener("DOMContentLoaded", () => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-        document.body.classList.add(savedTheme);
-    } else {
-        // Default to light theme
-        document.body.classList.add("theme-light");
-    }
-});
+// Format and validate URL or use search engine
+function formatURL(input) {
+  const hasProtocol = /^(https?:\/\/|\/\/)/i.test(input);
+  const isLikelyURL = /\.[a-z]{2,}/i.test(input);
 
-// Start search and redirect to Ultraviolet proxy
-function startSearch() {
-    const searchQuery = document.getElementById("search-input").value.trim();
-    if (searchQuery) {
-        const encoded = encodeURIComponent(searchQuery);
-        window.location.href = `http://localhost:8080/service/${encoded}`;  // Replace with your UV backend URL
-    }
+  if (isLikelyURL) {
+    return hasProtocol ? input : 'https://' + input;
+  }
+
+  // It's a search term
+  const query = encodeURIComponent(input);
+  const engine = engineSelect.value;
+  let searchURL = '';
+
+  switch (engine) {
+    case 'duckduckgo':
+      searchURL = `https://duckduckgo.com/?q=${query}`;
+      break;
+    case 'bing':
+      searchURL = `https://www.bing.com/search?q=${query}`;
+      break;
+    case 'brave':
+      searchURL = `https://search.brave.com/search?q=${query}`;
+      break;
+  }
+
+  return searchURL;
+}
+
+// Main navigation function
+function goToURL() {
+  const input = urlInput.value.trim();
+  if (!input) return;
+
+  const url = formatURL(input);
+
+  if (proxyToggle.checked) {
+    openTab(`/uv/service/${btoa(url)}`); // Ultraviolet proxy assumed at /uv/
+  } else {
+    openTab(url);
+  }
+}
+
+function searchQuery() {
+  const input = urlInput.value.trim();
+  if (!input) return;
+
+  const searchURL = formatURL(input);
+  if (proxyToggle.checked) {
+    openTab(`/uv/service/${btoa(searchURL)}`);
+  } else {
+    openTab(searchURL);
+  }
+}
+
+function refreshTab() {
+  const iframe = iframeContainer.querySelector('iframe');
+  if (iframe) iframe.src = iframe.src;
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('dark-theme');
+  document.body.classList.toggle('light-theme');
 }
