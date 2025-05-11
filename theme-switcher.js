@@ -1,4 +1,4 @@
-// Function to change the theme based on the button clicked
+//change the theme based on the button clicked
 function switchTheme(theme) {
     document.body.classList.remove('theme-light', 'theme-dark', 'theme-frogie', 'theme-szvy');
     document.body.classList.add(theme);
