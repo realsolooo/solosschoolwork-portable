@@ -1,0 +1,77 @@
+/* Basic styling for the theme switcher */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.theme-container {
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Back Button */
+.back-btn {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding: 10px 20px;
+    background-color: #FF6347;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    z-index: 2;
+}
+
+.back-btn:hover {
+    background-color: #FF4500;
+}
+
+/* Theme Buttons */
+.theme-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.theme-btn:hover {
+    background-color: #45a049;
+}
+/* Default theme (light) */
+body.theme-light {
+    background-color: white;
+    color: black;
+}
+
+/* Dark theme */
+body.theme-dark {
+    background-color: #121212;
+    color: white;
+}
+
+/* Frogie theme */
+body.theme-frogie {
+    background-color: #9ACD32;
+    color: #5B5B2F;
+}
+
+/* Szvy theme */
+body.theme-szvy {
+    background-color: #B0E0E6;
+    color: #1C1C1C;
+}
