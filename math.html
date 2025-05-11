@@ -2,297 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Solo's Browser</title>
-  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solo Central Reborn</title>
   <style>
     body {
-      margin: 0;
-      font: normal 75% Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
       background-color: #000;
       color: white;
+      margin: 0;
+      padding: 0;
     }
 
-    canvas {
-      display: block;
-      vertical-align: bottom;
+    h1 {
+      margin-top: 50px;
+      font-size: 50px;
+      color: #ff0000;
     }
 
-    #particles-js {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: #000000;
-      background-size: cover;
-      background-position: 50% 50%;
-      z-index: -1;
+    p {
+      font-size: 20px;
+      margin-top: 20px;
     }
 
-    #topbar {
-      position: relative;
-      padding: 10px;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 1;
+    .warning {
+      font-size: 30px;
+      color: #ff3333;
+      margin: 20px 0;
     }
 
-    #bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    #bar input, #bar select, #bar button {
-      padding: 8px;
+    .enter-btn {
+      background-color: #4cff9c;
+      color: black;
+      padding: 15px 30px;
+      border: none;
       border-radius: 5px;
-      border: none;
-    }
-
-    #bar input {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    #tabs {
-      display: flex;
-      gap: 5px;
-      margin-top: 5px;
-      overflow-x: auto;
-    }
-
-    .tab {
-      background: #222;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 4px;
+      font-size: 18px;
       cursor: pointer;
+      margin-top: 30px;
     }
 
-    .tab.active {
-      background: #4cff9c;
-      color: black;
-    }
-
-    .tab .close {
-      margin-left: 8px;
-      color: red;
-      cursor: pointer;
-    }
-
-    #iframe-container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      height: calc(100vh - 150px);
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    .light-theme {
-      background-color: #f5f5f5;
-      color: black;
-    }
-
-    .light-theme #topbar {
-      background: rgba(255, 255, 255, 0.7);
-    }
-
-    #bookmarks {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-top: 5px;
-    }
-
-    .bookmark {
-      background: #555;
-      color: white;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
+    .enter-btn:hover {
+      background-color: #38b78d;
     }
   </style>
 </head>
-<body class="dark-theme">
-  <div id="particles-js"></div>
+<body>
+  <h1>Solo Central Reborn</h1>
+  <p class="warning">Read This Bible Quote!</p>
+           <p id="random-text">Games with your Desire!</p>
+        <script>
+            const texts = [
+                "John 3:16' ('For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life')",
+                "Philippians 4:13' ('I can do all things through Christ who strengthens me')",
+                "Jeremiah 29:11' ('For I know the plans I have for you,'' declares the Lord, ''plans to prosper you and not to harm you, plans to give you hope and a future')"
+            ];
+            
+        document.getElementById("random-text").textContent = texts[Math.floor(Math.random() * texts.length)];
+        </script>
 
-  <div id="topbar">
-    <div id="bar">
-      <input type="text" id="url" placeholder="Enter URL or Search Term" />
-      <select id="engine">
-        <option value="duckduckgo">DuckDuckGo</option>
-        <option value="bing">Bing</option>
-        <option value="brave">Brave</option>
-      </select>
-      <button onclick="goToURL()">Go</button>
-      <button onclick="searchQuery()">Search</button>
-      <button onclick="refreshTab()">🔄</button>
-      <button onclick="toggleTheme()">🌙/☀️</button>
-      <button onclick="addBookmark()">⭐</button>
-      <label><input type="checkbox" id="proxyToggle"> Proxy</label>
-    </div>
-    <div id="tabs"></div>
-    <div id="bookmarks"></div>
-  </div>
-
-  <div id="iframe-container"></div>
-
-  <script>
-    particlesJS('particles-js', {
-      particles: {
-        number: { value: 600, density: { enable: true, value_area: 800 } },
-        color: { value: '#4cff9c' },
-        shape: { type: 'circle' },
-        opacity: {
-          value: 0.5, random: true,
-          anim: { enable: true, speed: 1, opacity_min: 0 }
-        },
-        size: {
-          value: 3, random: true,
-          anim: { enable: true, speed: 4, size_min: 0.3 }
-        },
-        line_linked: { enable: false },
-        move: {
-          enable: true, speed: 6, direction: 'bottom',
-          random: false, straight: false, out_mode: 'out', bounce: false
-        }
-      },
-      interactivity: {
-        detect_on: 'canvas',
-        events: {
-          onhover: { enable: true, mode: 'repulse' },
-          onclick: { enable: true, mode: 'push' }
-        }
-      },
-      retina_detect: true
-    });
-  </script>
-
-  <script>
-    const urlInput = document.getElementById('url');
-    const engineSelect = document.getElementById('engine');
-    const proxyToggle = document.getElementById('proxyToggle');
-    const iframeContainer = document.getElementById('iframe-container');
-    const tabsDiv = document.getElementById('tabs');
-    const bookmarksDiv = document.getElementById('bookmarks');
-
-    let tabs = [];
-    let currentTab = null;
-
-    function formatURL(input) {
-      const isLikelyURL = /\.[a-z]{2,}/i.test(input);
-      if (isLikelyURL) {
-        return input.startsWith('http') ? input : 'https://' + input;
-      }
-      const query = encodeURIComponent(input);
-      switch (engineSelect.value) {
-        case 'bing': return `https://www.bing.com/search?q=${query}`;
-        case 'brave': return `https://search.brave.com/search?q=${query}`;
-        default: return `https://duckduckgo.com/?q=${query}`;
-      }
-    }
-
-    function openTab(url, label = null) {
-      const id = Date.now();
-      const proxyURL = proxyToggle.checked ? `/uv/service/${btoa(url)}` : url;
-
-      const iframe = document.createElement('iframe');
-      iframe.src = proxyURL;
-      iframe.id = `iframe-${id}`;
-      iframe.style.display = "none";
-      iframeContainer.appendChild(iframe);
-
-      const tab = { id, url, label: label || url };
-      tabs.push(tab);
-      currentTab = tab;
-      updateTabs();
-    }
-
-    function updateTabs() {
-      tabsDiv.innerHTML = '';
-      iframeContainer.querySelectorAll('iframe').forEach(i => i.style.display = 'none');
-
-      tabs.forEach(tab => {
-        const tabElem = document.createElement('div');
-        tabElem.className = 'tab' + (tab.id === currentTab.id ? ' active' : '');
-        tabElem.innerHTML = tab.label + ` <span class="close" onclick="closeTab(${tab.id})">×</span>`;
-        tabElem.onclick = () => switchTab(tab.id);
-        tabsDiv.appendChild(tabElem);
-
-        if (tab.id === currentTab.id) {
-          const activeIframe = document.getElementById(`iframe-${tab.id}`);
-          if (activeIframe) activeIframe.style.display = 'block';
-        }
-      });
-    }
-
-    function switchTab(id) {
-      const tab = tabs.find(t => t.id === id);
-      if (tab) {
-        currentTab = tab;
-        updateTabs();
-      }
-    }
-
-    function closeTab(id) {
-      tabs = tabs.filter(t => t.id !== id);
-      const iframe = document.getElementById(`iframe-${id}`);
-      if (iframe) iframe.remove();
-      if (currentTab.id === id) currentTab = tabs[tabs.length - 1] || null;
-      updateTabs();
-    }
-
-    function goToURL() {
-      const input = urlInput.value.trim();
-      if (!input) return;
-      const url = formatURL(input);
-      openTab(url);
-    }
-
-    function searchQuery() {
-      goToURL();
-    }
-
-    function refreshTab() {
-      if (currentTab) {
-        const iframe = document.getElementById(`iframe-${currentTab.id}`);
-        if (iframe) iframe.src = iframe.src;
-      }
-    }
-
-    function toggleTheme() {
-      document.body.classList.toggle('dark-theme');
-      document.body.classList.toggle('light-theme');
-    }
-
-    function addBookmark() {
-      if (!currentTab) return;
-      let bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-      if (!bookmarks.find(b => b.url === currentTab.url)) {
-        bookmarks.push({ url: currentTab.url, label: currentTab.label });
-        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-        loadBookmarks();
-      }
-    }
-
-    function loadBookmarks() {
-      bookmarksDiv.innerHTML = '';
-      const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-      bookmarks.forEach(b => {
-        const btn = document.createElement('div');
-        btn.className = 'bookmark';
-        btn.textContent = b.label;
-        btn.onclick = () => openTab(b.url, b.label);
-        bookmarksDiv.appendChild(btn);
-      });
-    }
-
-    window.onload = () => {
-      loadBookmarks();
-    };
-  </script>
+  <button class="enter-btn" onclick="window.location.href = 'math.html';">Enter Browser</button>
 </body>
 </html>
