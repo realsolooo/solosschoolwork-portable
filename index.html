@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Clever</title>
+  <title>Solo Central Reborn</title>
   <style>
     body {
       font-family: Arial, Helvetica, sans-serif;
@@ -49,8 +49,17 @@
 </head>
 <body>
   <h1>Solo Central Reborn</h1>
-  <p class="warning">WARNING!</p>
-  <p>hello! this is soloo and i have something to tell you, i have made a reborn version of solo central. and whatever you do with this link make sure you gatekeep it! this will be the new solo central for now on or until i feel like changing it.</p>
+  <p class="warning">Read This Bible Quote!</p>
+           <p id="random-text">Games with your Desire!</p>
+        <script>
+            const texts = [
+                "John 3:16' ('For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life')",
+                "Philippians 4:13' ('I can do all things through Christ who strengthens me')",
+                "Jeremiah 29:11' ('For I know the plans I have for you,'' declares the Lord, ''plans to prosper you and not to harm you, plans to give you hope and a future')"
+            ];
+            
+        document.getElementById("random-text").textContent = texts[Math.floor(Math.random() * texts.length)];
+        </script>
 
   <button class="enter-btn" onclick="window.location.href = 'math.html';">Enter Browser</button>
 </body>
